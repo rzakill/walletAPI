@@ -1,0 +1,2534 @@
+{
+	"info": {
+		"_postman_id": "49994e69-3a5e-41bd-86d6-6b979081eb49",
+		"name": "MerchantX Wallet Current",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateWallet",
+			"item": [
+				{
+					"name": "SignIn",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "90895a46-dfe1-4983-8953-0d720a86aef4",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"200\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"OK\";",
+									"    ",
+									"    ",
+									"}catch(e){}",
+									"var headerValue  = jsonData.data.access_token;",
+									"var testEmail = jsonData.data.email;",
+									"pm.environment.set(\"Authorization3\",headerValue);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"torayit858@mailimail.com\",\"password\":\"Password5252@\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qturl}}/signin",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateWallet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "15535a40-a6ff-4e98-84ee-744cb8e53d21",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response status is: \" + jsonData.status] = jsonData.status === \"ACTIVE\";",
+									"    tests[\"response creation status is: \" + jsonData.walletCreationStatus] = jsonData.walletCreationStatus === \"COMPLETED\";",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\":\"IST\",\n    \"name\": \"Ayo's wallet\",\n    \"status\":\"ACTIVE\",\n    \"mobileNo\": \"08139153440\",\n    \"firstName\":\"Ayo\",\n    \"ids\":{\n      \"phone\":\"08139153440\",\n      \"email\":\"torayit858@mailimail.com\",\n      \"merchantId\":\"MX15276\"\n      },\n    \"channel\":\"WEB\",\n    \"pin\":\"1234\",\n   \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateWalletInvalidPhone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "389f3805-7129-48a9-b960-759639642356",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Bad Request\";",
+									"    tests[\"response message is: \" + jsonData.errors[0].message] = jsonData.errors[0].message === \"Mobile number is required\";",
+									"    ",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\":\"IST\",\n    \"name\": \"Ayo's wallet\",\n    \"status\":\"ACTIVE\",\n    \"mobileNo\": \"\",\n    \"firstName\":\"Ayo\",\n    \"ids\":{\n      \"phone\":\"08139153440\",\n      \"email\":\"torayit858@mailimail.com\",\n      \"merchantId\":\"MX15276\"\n      },\n    \"channel\":\"WEB\",\n    \"pin\":\"1234\",\n   \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateWalletBlankPhone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "389f3805-7129-48a9-b960-759639642356",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Bad Request\";",
+									"    tests[\"response message is: \" + jsonData.errors[0].message] = jsonData.errors[0].message === \"enter valid merchantPhoneNumber\";",
+									"    ",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\":\"IST\",\n    \"name\": \"Ayo's wallet\",\n    \"status\":\"ACTIVE\",\n    \"mobileNo\": \"123445\",\n    \"firstName\":\"Ayo\",\n    \"ids\":{\n      \"phone\":\"08139153440\",\n      \"email\":\"torayit858@mailimail.com\",\n      \"merchantId\":\"MX15276\"\n      },\n    \"channel\":\"WEB\",\n    \"pin\":\"1234\",\n   \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateWalletInvalidMerchantId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74a36fba-2dff-4f17-b49f-af96c06e14e1",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Unauthorized Merchant Code\";",
+									"    ",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\":\"IST\",\n    \"name\": \"Ayo's wallet\",\n    \"status\":\"ACTIVE\",\n    \"mobileNo\": \"08139153440\",\n    \"firstName\":\"Ayo\",\n    \"ids\":{\n      \"phone\":\"08139153440\",\n      \"email\":\"torayit858@mailimail.com\",\n      \"merchantId\":\"MX15277\"\n      },\n    \"channel\":\"WEB\",\n    \"pin\":\"1234\",\n   \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateWalletUnauthenticated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9c797abe-1b0a-41dc-8785-139a2debb810",
+								"exec": [
+									"tests[\"Http status is 401\"] = responseCode.code === 401;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response error is: \" + jsonData.error] = jsonData.error === \"unauthorized\";",
+									"    tests[\"response error description is: \" + jsonData.error_description] = jsonData.error_description === \"Full authentication is required to access this resource\";",
+									"    ",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"provider\":\"IST\",\n    \"name\": \"Ayo's wallet\",\n    \"status\":\"ACTIVE\",\n    \"mobileNo\": \"08139153440\",\n    \"firstName\":\"Ayo\",\n    \"ids\":{\n      \"phone\":\"08139153440\",\n      \"email\":\"torayit858@mailimail.com\",\n      \"merchantId\":\"MX15276\"\n      },\n    \"channel\":\"WEB\",\n    \"pin\":\"1234\",\n   \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "WalletBalance",
+			"item": [
+				{
+					"name": "GetWalletBalance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ca1172-7ff0-415f-bb84-0b412ab27be3",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/balance/MX15276?walletProvider=IST",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance",
+								"MX15276"
+							],
+							"query": [
+								{
+									"key": "walletProvider",
+									"value": "IST"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetWalletBalanceUnAuthenticated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ca1172-7ff0-415f-bb84-0b412ab27be3",
+								"exec": [
+									"tests[\"Http status is 401\"] = responseCode.code === 401;",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response error is: \" + jsonData.error] = jsonData.error === \"unauthorized\";",
+									"    tests[\"response error description is: \" + jsonData.error_description] = jsonData.error_description === \"Full authentication is required to access this resource\";",
+									" ",
+									"}catch(e){}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/balance/MX15276?walletProvider=IST",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance",
+								"MX15276"
+							],
+							"query": [
+								{
+									"key": "walletProvider",
+									"value": "IST"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetWalletBalanceInvalidToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ca1172-7ff0-415f-bb84-0b412ab27be3",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response error description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									" ",
+									"}catch(e){}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiYXJiaXRlciIsImNhZXNhciIsImdlbmVyaWMtd2FsbGV0IiwiaGltcy1wb3J0bGV0IiwiaWZpcy10cmFuc2FjdGlvbi1zZXJ2aWNlIiwiaXN3LWNvbGxlY3Rpb25zIiwiaXN3LWNvcmUiLCJpc3ctaW5zdGl0dXRpb24iLCJpc3ctbGVuZGluZy1zZXJ2aWNlIiwiaXN3LXBheW1lbnRnYXRld2F5IiwiaXN3LXBvc3Qtb2ZmaWNlIiwicGFzc3BvcnQiLCJwcm9qZWN0LXgtbWVyY2hhbnQiLCJyZWN1cnJlbnQtYmlsbGluZy1hcGkiLCJyZWZlcnJhbC1zZXJ2aWNlLWFwaSIsInNhZmV0b2tlbi1hcy1hLXNlcnZpY2UiLCJ2b3VjaGVyLWFwaSIsIndhbGxldCIsIndhbGxldC1zZXJ2aWNlIiwid2VicGF5LXBvcnRsZXQiXSwic2NvcGUiOlsicHJvZmlsZSJdLCJleHAiOjMxNTk0NzA0NTcsImp0aSI6IjU5ZDgzOGFmLWYxMzktNDY3My1hYTYxLWVhNmUzNTNkZTdkZiIsImNsaWVudF9pZCI6InByb2plY3QteC1tZXJjaGFudCJ9.hGOAMNR3D6DbgRxI_iHAwFnhxbObZ7yXzEqJAuiNYatQT4_PlXTExStXf83HuNElE08BX2TcInK9kru3kxb8g4IzigLmLFiGcRXJ0c-SAdZWcwJzufLRdiZFEDjtyjLOfBJBMBRZ8LD2n3KI_IyxZAdEVGm6ZawH8vQ_ygIeahCZp9zkFo8unZOH1BhN9ACEo3jQguH7bbP2-OFDwUs293HWK5kRZbpFkHwiF01IOq4Gq7ag5z3gVdf5DlsschNqj38XFpkdPEam8otOdpsdWa0N3xQ8bYQ8Hg3H_fB_Ti6l3AVA6g4NID8g_N8TDrZr2FQdSQ9YXY_f3pHgdWQJww"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/balance/MX15276?walletProvider=ISW",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance",
+								"MX15276"
+							],
+							"query": [
+								{
+									"key": "walletProvider",
+									"value": "ISW"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBalanceInvalidID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ca1172-7ff0-415f-bb84-0b412ab27be3",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									" ",
+									"}catch(e){}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/balance/MX15272?walletProvider=IST",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance",
+								"MX15272"
+							],
+							"query": [
+								{
+									"key": "walletProvider",
+									"value": "IST"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBalanceBlankID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ca1172-7ff0-415f-bb84-0b412ab27be3",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									" ",
+									"}catch(e){}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/balance/MX15272?walletProvider=IST",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance",
+								"MX15272"
+							],
+							"query": [
+								{
+									"key": "walletProvider",
+									"value": "IST"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DefaultSettlementAccount",
+			"item": [
+				{
+					"name": "GetDefaultSettlementAccountByMerchantCode",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiJ9.eyJsYXN0TmFtZSI6IkFkbWluIiwiZmlyc3RMb2dpbiI6ZmFsc2UsInVzZXJfbmFtZSI6ImVzY3Jvdy5hZG1pbkBzaGFya2xhc2Vycy5jb20iLCJtb2JpbGVObyI6bnVsbCwiY2xpZW50X2Rlc2NyaXB0aW9uIjpudWxsLCJjbGllbnRfaWQiOiJpc3ctcG9ydGFsIiwiZmlyc3ROYW1lIjoiRXNjcm93IiwiZW1haWxWZXJpZmllZCI6ZmFsc2UsImF1ZCI6WyJhcmJpdGVyIiwiY2Flc2FyIiwiZWNoYW5nZS1zZXJ2aWNlIiwiZXNjcm93LXNlcnZpY2UiLCJpc3ctY29sbGVjdGlvbnMiLCJpc3ctY29yZSIsImlzdy1sZW5kaW5nLXNlcnZpY2UiLCJpc3ctcGF5bWVudGdhdGV3YXkiLCJwYXNzcG9ydCIsInByb2plY3QteC1tZXJjaGFudCIsInRyYW5zZmVyLXNlcnZpY2UtcG9ydGxldCIsInZlcnZlLWxpZmUtYWRtaW4tc2VydmljZSIsInZlcnZlLXJld2FyZC11aSJdLCJzY29wZSI6WyJwcm9maWxlIl0sImV4cCI6MzE1MjExMzkyMiwibW9iaWxlTm9WZXJpZmllZCI6ZmFsc2UsImNsaWVudF9sb2dvIjpudWxsLCJqdGkiOiI5MGFiOGYzNC1lNTNjLTQ2ZTUtYmQ3Zi04ZTBkMDY3OWY5MmYiLCJlbWFpbCI6ImVzY3Jvdy5hZG1pbkBzaGFya2xhc2Vycy5jb20iLCJwYXNzcG9ydElkIjoiMzQ1RjU1RkQtRkI2OS00OTczLTg5NjUtRjU1NTA5RjNBNzAzIn0.DJOOu9OixI2nAzw20s5d-yLW7cIolOWgN_LI69g6R-Vf2YQw8ShpY81ACM2l-X5Rz8auHuYmXC-qbcYkm9d4el9e6LHYI5YLOTHpulNK6JGQ45t0s9kEzbiarxvhgO0849dLpg0ETV7X_bJkXFIck9b0h0K2H8US8G_Xs7ps4wLhGw2rYbGyaqGolWqiI5XyKrF5jaAAOeGQ73dDzLtGZ1zXhtNqXyVeE964JHN877lPPmbQC1MQx4IPLgEHAULFQxTa3bsoar3NCK9IyGs2OptsyDwUgkAzc0Za8p50MmKpClbl-qr7BiYbuZ6RdaeqxMmqPeYEKtMCc2PviA5c9w",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://qa.interswitchng.com/collections/api/v1/settlementaccounts/default/MX15276",
+							"protocol": "https",
+							"host": [
+								"qa",
+								"interswitchng",
+								"com"
+							],
+							"path": [
+								"collections",
+								"api",
+								"v1",
+								"settlementaccounts",
+								"default",
+								"MX15276"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "SetSettlementAccount",
+			"item": [
+				{
+					"name": "SetDefaultSettlementAccount",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiJ9.eyJsYXN0TmFtZSI6IkFkbWluIiwiZmlyc3RMb2dpbiI6ZmFsc2UsInVzZXJfbmFtZSI6ImVzY3Jvdy5hZG1pbkBzaGFya2xhc2Vycy5jb20iLCJtb2JpbGVObyI6bnVsbCwiY2xpZW50X2Rlc2NyaXB0aW9uIjpudWxsLCJjbGllbnRfaWQiOiJpc3ctcG9ydGFsIiwiZmlyc3ROYW1lIjoiRXNjcm93IiwiZW1haWxWZXJpZmllZCI6ZmFsc2UsImF1ZCI6WyJhcmJpdGVyIiwiY2Flc2FyIiwiZWNoYW5nZS1zZXJ2aWNlIiwiZXNjcm93LXNlcnZpY2UiLCJpc3ctY29sbGVjdGlvbnMiLCJpc3ctY29yZSIsImlzdy1sZW5kaW5nLXNlcnZpY2UiLCJpc3ctcGF5bWVudGdhdGV3YXkiLCJwYXNzcG9ydCIsInByb2plY3QteC1tZXJjaGFudCIsInRyYW5zZmVyLXNlcnZpY2UtcG9ydGxldCIsInZlcnZlLWxpZmUtYWRtaW4tc2VydmljZSIsInZlcnZlLXJld2FyZC11aSJdLCJzY29wZSI6WyJwcm9maWxlIl0sImV4cCI6MzE1MjExMzkyMiwibW9iaWxlTm9WZXJpZmllZCI6ZmFsc2UsImNsaWVudF9sb2dvIjpudWxsLCJqdGkiOiI5MGFiOGYzNC1lNTNjLTQ2ZTUtYmQ3Zi04ZTBkMDY3OWY5MmYiLCJlbWFpbCI6ImVzY3Jvdy5hZG1pbkBzaGFya2xhc2Vycy5jb20iLCJwYXNzcG9ydElkIjoiMzQ1RjU1RkQtRkI2OS00OTczLTg5NjUtRjU1NTA5RjNBNzAzIn0.DJOOu9OixI2nAzw20s5d-yLW7cIolOWgN_LI69g6R-Vf2YQw8ShpY81ACM2l-X5Rz8auHuYmXC-qbcYkm9d4el9e6LHYI5YLOTHpulNK6JGQ45t0s9kEzbiarxvhgO0849dLpg0ETV7X_bJkXFIck9b0h0K2H8US8G_Xs7ps4wLhGw2rYbGyaqGolWqiI5XyKrF5jaAAOeGQ73dDzLtGZ1zXhtNqXyVeE964JHN877lPPmbQC1MQx4IPLgEHAULFQxTa3bsoar3NCK9IyGs2OptsyDwUgkAzc0Za8p50MmKpClbl-qr7BiYbuZ6RdaeqxMmqPeYEKtMCc2PviA5c9w",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"settlementAccountId\": 28,\r\n        \"merchantCode\": \"MX15276\"\r\n        }\r\n       "
+						},
+						"url": {
+							"raw": "https://qa.interswitchng.com/collections/api/v1/settlementaccounts/default",
+							"protocol": "https",
+							"host": [
+								"qa",
+								"interswitchng",
+								"com"
+							],
+							"path": [
+								"collections",
+								"api",
+								"v1",
+								"settlementaccounts",
+								"default"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PaymentTransfer",
+			"item": [
+				{
+					"name": "FirstCallTransfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response message is: \" + jsonData.responseMessage] = jsonData.responseMessage === \"Successful\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferBlankBeneficiary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Beneficiary Account number can not be blank\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferBlankCbnCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Beneficiary Bank Code can not be blank\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferBlankPin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Pin can not be blank\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferInvalidMerchantCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15277\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferInvalidWalletId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"1222\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferUnAuthenticated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 401\"] = responseCode.code === 401;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response error is: \" + jsonData.error] = jsonData.error === \"unauthorized\";",
+									"    tests[\"response error description is: \" + jsonData.error_description] = jsonData.error_description === \"Full authentication is required to access this resource\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FirstCallTransferInvalidToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b161c4c3-862f-470a-a1ea-1c96956e4c1e",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiYXJiaXRlciIsImNhZXNhciIsImdlbmVyaWMtd2FsbGV0IiwiaGltcy1wb3J0bGV0IiwiaWZpcy10cmFuc2FjdGlvbi1zZXJ2aWNlIiwiaXN3LWNvbGxlY3Rpb25zIiwiaXN3LWNvcmUiLCJpc3ctaW5zdGl0dXRpb24iLCJpc3ctbGVuZGluZy1zZXJ2aWNlIiwiaXN3LXBheW1lbnRnYXRld2F5IiwiaXN3LXBvc3Qtb2ZmaWNlIiwicGFzc3BvcnQiLCJwcm9qZWN0LXgtbWVyY2hhbnQiLCJyZWN1cnJlbnQtYmlsbGluZy1hcGkiLCJyZWZlcnJhbC1zZXJ2aWNlLWFwaSIsInNhZmV0b2tlbi1hcy1hLXNlcnZpY2UiLCJ2b3VjaGVyLWFwaSIsIndhbGxldCIsIndhbGxldC1zZXJ2aWNlIiwid2VicGF5LXBvcnRsZXQiXSwic2NvcGUiOlsicHJvZmlsZSJdLCJleHAiOjMxNTk0NzA0NTcsImp0aSI6IjU5ZDgzOGFmLWYxMzktNDY3My1hYTYxLWVhNmUzNTNkZTdkZiIsImNsaWVudF9pZCI6InByb2plY3QteC1tZXJjaGFudCJ9.hGOAMNR3D6DbgRxI_iHAwFnhxbObZ7yXzEqJAuiNYatQT4_PlXTExStXf83HuNElE08BX2TcInK9kru3kxb8g4IzigLmLFiGcRXJ0c-SAdZWcwJzufLRdiZFEDjtyjLOfBJBMBRZ8LD2n3KI_IyxZAdEVGm6ZawH8vQ_ygIeahCZp9zkFo8unZOH1BhN9ACEo3jQguH7bbP2-OFDwUs293HWK5kRZbpFkHwiF01IOq4Gq7ag5z3gVdf5DlsschNqj38XFpkdPEam8otOdpsdWa0N3xQ8bYQ8Hg3H_fB_Ti6l3AVA6g4NID8g_N8TDrZr2FQdSQ9YXY_f3pHgdWQJww"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0012852744\",\n  \"beneficiaryAccountName\":\"Ayodeji Okikiolu\",\n  \"beneficiaryBankCbnCode\":\"058\",\n  \"channel\":\"WEB\",\n  \"amount\":\"200\",\n  \"pin\": \"1234\"\n}\n]"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GetPayoutMerchantCode",
+			"item": [
+				{
+					"name": "GetWalletPayoutByMerchantCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b23c617-89d3-490d-acd6-3791ec8e12c4",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer {{Authorization3}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout/summary?startDate=01/03/2020&endDate=31/03/2020&merchantCode=MX15276&responseCode=00",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "01/03/2020"
+								},
+								{
+									"key": "endDate",
+									"value": "31/03/2020"
+								},
+								{
+									"key": "merchantCode",
+									"value": "MX15276"
+								},
+								{
+									"key": "responseCode",
+									"value": "00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetWalletPayoutWithoutStartDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b23c617-89d3-490d-acd6-3791ec8e12c4",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"The parameter : 'startDate' is missing in the request.\";",
+									"    ",
+									"}catch(e){}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout/summary?endDate=31/03/2020&merchantCode=MX15276&responseCode=00",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "endDate",
+									"value": "31/03/2020"
+								},
+								{
+									"key": "merchantCode",
+									"value": "MX15276"
+								},
+								{
+									"key": "responseCode",
+									"value": "00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetWalletPayoutWithoutEndDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b23c617-89d3-490d-acd6-3791ec8e12c4",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"The parameter : 'endDate' is missing in the request.\";",
+									"    ",
+									"}catch(e){}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout/summary?startDate=01/03/2020&merchantCode=MX15276&responseCode=00",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "01/03/2020"
+								},
+								{
+									"key": "merchantCode",
+									"value": "MX15276"
+								},
+								{
+									"key": "responseCode",
+									"value": "00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetWalletPayoutWithoutMerchantCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b23c617-89d3-490d-acd6-3791ec8e12c4",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    ",
+									"}catch(e){}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout/summary?startDate=01/03/2020&endDate=31/03/2020&merchantCode=&responseCode=00",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "01/03/2020"
+								},
+								{
+									"key": "endDate",
+									"value": "31/03/2020"
+								},
+								{
+									"key": "merchantCode",
+									"value": ""
+								},
+								{
+									"key": "responseCode",
+									"value": "00"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "NameEnquiry",
+			"item": [
+				{
+					"name": "Name Enquiry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "18137903-27be-4f9c-8505-5702c3023bab",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallets/payout/name-enquiry?cbnCode=058&accountNumber=0012852744",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"payout",
+								"name-enquiry"
+							],
+							"query": [
+								{
+									"key": "cbnCode",
+									"value": "058"
+								},
+								{
+									"key": "accountNumber",
+									"value": "0012852744"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CreateBeneficiary",
+			"item": [
+				{
+					"name": "CreateBeneficiary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b87fae9-3ac1-4032-a787-f1729eaec283",
+								"exec": [
+									"tests[\"Http status is 409\"] = responseCode.code === 409;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10409\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Entity already exists\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer {{Authorization3}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountName\":\"Ayodeji Okikiolu\",\n    \"accountNumber\":\"0012852742\",\n    \"accountType\":\"10\",\n    \"maskedAccountNumber\":\"\",\n    \"bankName\":\"\",\n    \"bankCode\":\"GTB\",\n    \"merchantCode\":\"MX15276\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateBeneficiaryWithoutAcct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b87fae9-3ac1-4032-a787-f1729eaec283",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response error is: \" + jsonData.errors[1].message] = jsonData.errors[1].message === \"Account Number cannot be empty\";",
+									"    tests[\"response description is: \" + jsonData.errors[0].message] = jsonData.errors[0].message === \"Unauthorized Merchant Code\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountName\":\"Ayodeji James\",\n    \"accountNumber\":\"\",\n    \"accountType\":\"10\",\n    \"maskedAccountNumber\":\"\",\n    \"bankName\":\"\",\n    \"bankCode\":\"GTB\",\n    \"merchantCode\":\"MX15276\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateBeneficiaryUnauthenticated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b87fae9-3ac1-4032-a787-f1729eaec283",
+								"exec": [
+									"tests[\"Http status is 401\"] = responseCode.code === 401;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response error is: \" + jsonData.error] = jsonData.error === \"unauthorized\";",
+									"    tests[\"response description is: \" + jsonData.erro_description] = jsonData.error_description === \"Full authentication is required to access this resource\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountName\":\"Ayodeji Okikiolu\",\n    \"accountNumber\":\"0012852744\",\n    \"accountType\":\"10\",\n    \"maskedAccountNumber\":\"\",\n    \"bankName\":\"\",\n    \"bankCode\":\"GTB\",\n    \"merchantCode\":\"MX15276\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateBeneficiaryBlankMerchantCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b87fae9-3ac1-4032-a787-f1729eaec283",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description is: \" + jsonData.errors[0].message] = jsonData.errors[0].message === \"Unauthorized Merchant Code\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountName\":\"Ayodeji Okikiolu\",\n    \"accountNumber\":\"0012852744\",\n    \"accountType\":\"10\",\n    \"maskedAccountNumber\":\"\",\n    \"bankName\":\"\",\n    \"bankCode\":\"GTB\",\n    \"merchantCode\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GetBeneficiaryByMerchantCodeAndID",
+			"item": [
+				{
+					"name": "GetBeneficiaryByMerchantCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f208b843-3483-4820-a689-c94fe7bd09dd",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response account name is: \" + jsonData[0].accountName] = jsonData[0].accountName === \"Ayodeji Okikiolu\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary/merchant/MX15276",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary",
+								"merchant",
+								"MX15276"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBeneficiaryByInvalidToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f208b843-3483-4820-a689-c94fe7bd09dd",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiYXJiaXRlciIsImNhZXNhciIsImdlbmVyaWMtd2FsbGV0IiwiaGltcy1wb3J0bGV0IiwiaWZpcy10cmFuc2FjdGlvbi1zZXJ2aWNlIiwiaXN3LWNvbGxlY3Rpb25zIiwiaXN3LWNvcmUiLCJpc3ctaW5zdGl0dXRpb24iLCJpc3ctbGVuZGluZy1zZXJ2aWNlIiwiaXN3LXBheW1lbnRnYXRld2F5IiwiaXN3LXBvc3Qtb2ZmaWNlIiwicGFzc3BvcnQiLCJwcm9qZWN0LXgtbWVyY2hhbnQiLCJyZWN1cnJlbnQtYmlsbGluZy1hcGkiLCJyZWZlcnJhbC1zZXJ2aWNlLWFwaSIsInNhZmV0b2tlbi1hcy1hLXNlcnZpY2UiLCJ2b3VjaGVyLWFwaSIsIndhbGxldCIsIndhbGxldC1zZXJ2aWNlIiwid2VicGF5LXBvcnRsZXQiXSwic2NvcGUiOlsicHJvZmlsZSJdLCJleHAiOjMxNTk0NzA0NTcsImp0aSI6IjU5ZDgzOGFmLWYxMzktNDY3My1hYTYxLWVhNmUzNTNkZTdkZiIsImNsaWVudF9pZCI6InByb2plY3QteC1tZXJjaGFudCJ9.hGOAMNR3D6DbgRxI_iHAwFnhxbObZ7yXzEqJAuiNYatQT4_PlXTExStXf83HuNElE08BX2TcInK9kru3kxb8g4IzigLmLFiGcRXJ0c-SAdZWcwJzufLRdiZFEDjtyjLOfBJBMBRZ8LD2n3KI_IyxZAdEVGm6ZawH8vQ_ygIeahCZp9zkFo8unZOH1BhN9ACEo3jQguH7bbP2-OFDwUs293HWK5kRZbpFkHwiF01IOq4Gq7ag5z3gVdf5DlsschNqj38XFpkdPEam8otOdpsdWa0N3xQ8bYQ8Hg3H_fB_Ti6l3AVA6g4NID8g_N8TDrZr2FQdSQ9YXY_f3pHgdWQJww"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary/merchant/MX15276",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary",
+								"merchant",
+								"MX15276"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBeneficiaryById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b94b8ee2-9732-4fa1-a189-056c0948de4f",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response account name is: \" + jsonData.accountName] = jsonData.accountName === \"Ayodeji Okikiolu\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary/MX15276/6",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary",
+								"MX15276",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBeneficiaryByInvalidMerchantCode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f208b843-3483-4820-a689-c94fe7bd09dd",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10400\";",
+									"    tests[\"response description name is: \" + jsonData.description] = jsonData.description === \"User Operation Unauthorized\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/beneficiary/merchant/MX15279",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"beneficiary",
+								"merchant",
+								"MX15279"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GetMerchantWallet",
+			"item": [
+				{
+					"name": "Get Merchant Wallet",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/MX15276",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"MX15276"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "WalletConfig",
+			"item": [
+				{
+					"name": "UpdateWalletConfig",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ad6a4377-6db0-42a9-a8a8-4ca436ef737c",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response merchant code is: \" + jsonData.merchantCode] = jsonData.merchantCode === \"MX15276\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"merchantCode\":\"MX15276\",\n    \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/config/1",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"config",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateWalletConfigInvalidId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ad6a4377-6db0-42a9-a8a8-4ca436ef737c",
+								"exec": [
+									"tests[\"Http status is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    ",
+									"    tests[\"response merchant ddescription is: \" + jsonData.description] = jsonData.description === \"Expected value of type Integer but saw 'me'\";",
+									"    ",
+									"}catch(e){}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"merchantCode\":\"MX15276\",\n    \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/config/me",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"config",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateWalletPin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8d4ebea-0186-448f-a617-02b2ed30ba69",
+								"exec": [
+									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"try{",
+									"    tests[\"response message is: \" + jsonData.responseMessage] = jsonData.responseMessage === \"Please provide token supplied\";",
+									"}catch(e){}",
+									"var headerValue  = jsonData.data.access_token;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"merchantCode\":\"MX15276\",\n    \"oldPin\": \"1222\",\n    \"newPin\": \"1234\"\n}\n\n"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/pin/1",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"pin",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateWalletConfig",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"merchantCode\":\"MX15276\",\n\t \"mobileNumber\": \"08139153440\",\n    \"otpEnabled\": false,\n    \"sms\": false,\n    \"email\": false\n\n}"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/config/48",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"config",
+								"48"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AuthenticateUpdateWalletPin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{Authorization3}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"merchantCode\":\"MX15276\",\n    \"oldPin\": \"1222\",\n    \"newPin\": \"1234\",\n    \"walletId\":\"MX15276\",\n    \"requestReference\": \"BF63SKQ1SZCJ5J0\",\n    \"otp\":\"045132\"\n\n}\n\n"
+						},
+						"url": {
+							"raw": "{{qturl}}/api/v1/wallet/authenticateRequest/pin/1",
+							"host": [
+								"{{qturl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"authenticateRequest",
+								"pin",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Payout Authenticate Token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{Authorization3}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0037373174\",\n  \"beneficiaryAccountName\":\"Ibk Ogunsolu\",\n  \"beneficiaryBankCbnCode\":\"101\",\n  \"channel\":\"WEB\",\n  \"amount\":\"56600\",\n  \"pin\": \"1234\",\n  \"payoutReference\": \"MX1347JSJTEZLHW0V2DY\",\n   \"otp\":\"09378\",\n   \"id\":16\n},\n{\n  \"provider\":\"IST\",\n  \"merchantCode\":\"MX15276\",\n  \"walletIdType\":\"merchantId\",\n  \"walletId\":\"MX15276\",\n  \"beneficiaryAccountType\":\"01\",\n  \"beneficiaryAccountNumber\":\"0037373174\",\n  \"beneficiaryAccountName\":\"Ibk Ogunsolu\",\n  \"beneficiaryBankCbnCode\":\"101\",\n  \"channel\":\"WEB\",\n  \"amount\":\"56\",\n   \"pin\": \"1234\",\n   \"payoutReference\": \"MX1347JSJTEZLHW0V2DY\",\n    \"id\":17\n}\n]"
+				},
+				"url": {
+					"raw": "{{qturl}}/api/v1/wallets/payout/authenticateToken",
+					"host": [
+						"{{qturl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"wallets",
+						"payout",
+						"authenticateToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SignIn Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "90895a46-dfe1-4983-8953-0d720a86aef4",
+						"exec": [
+							"tests[\"Http status is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"try{",
+							"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"200\";",
+							"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"OK\";",
+							"    ",
+							"    ",
+							"}catch(e){}",
+							"var headerValue  = jsonData.data.access_token;",
+							"var testEmail = jsonData.data.email;",
+							"pm.environment.set(\"Authorization4\",headerValue);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"bapodes671@mailboxt.com\",\"password\":\"Password5252@@\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{qturl}}/signin",
+					"host": [
+						"{{qturl}}"
+					],
+					"path": [
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Merchant Account",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{Authorization4}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"merchantCode\": \"MX16017\",\r\n    \"bankInstitutionCode\": \"IST\",\r\n    \"alias\": \"Business Wallet\",\r\n    \"accountNumber\": \"0012852744\",\r\n    \"accountType\": \"60\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{qturl}}/api/v1/merchantxs/merchantAccount",
+					"host": [
+						"{{qturl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"merchantxs",
+						"merchantAccount"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": []
+}
