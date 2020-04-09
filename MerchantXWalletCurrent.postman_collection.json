@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "49994e69-3a5e-41bd-86d6-6b979081eb49",
-		"name": "MerchantX Wallet Current",
+		"name": "MerchantX WalletCurrent",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -74,13 +74,13 @@
 							"script": {
 								"id": "15535a40-a6ff-4e98-84ee-744cb8e53d21",
 								"exec": [
-									"tests[\"Http status is 200\"] = responseCode.code === 200;",
+									"tests[\"Http status is 409\"] = responseCode.code === 409;",
 									"",
 									"var jsonData = JSON.parse(responseBody);",
 									"try{",
 									"    ",
-									"    tests[\"response status is: \" + jsonData.status] = jsonData.status === \"ACTIVE\";",
-									"    tests[\"response creation status is: \" + jsonData.walletCreationStatus] = jsonData.walletCreationStatus === \"COMPLETED\";",
+									"    tests[\"response description is: \" + jsonData.description] = jsonData.description === \"Entity already exists\";",
+									"    tests[\"response code is: \" + jsonData.code] = jsonData.code === \"10409\";",
 									"}catch(e){}"
 								],
 								"type": "text/javascript"
